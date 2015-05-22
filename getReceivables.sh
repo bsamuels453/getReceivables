@@ -57,9 +57,18 @@ else
 	reverse='tac'
 fi
 
-# Don't forget to enter your username and password here! Or export the username and password environment variables
-username=
-password=
+# For autonomous authentication, uncomment and enter your username/password here, or export the username and password environment variables
+# username=foo
+# password=bar
+
+# If no username/password set, prompt user
+if [ -z $username ]
+then
+	read -p "username: " username
+elif [ -z $password ]
+then
+	read -s -p "password: " password
+fi
 
 if [ -z $username ] || [ -z $password ]
 then
