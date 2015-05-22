@@ -1,7 +1,7 @@
 # getReceivables
 Shell script for use with OmegaFi and Google Sheets. Creates a spreadsheet with balances of all members.
 
-This script creates a csv file called receivables.csv in a user-specified directory, sorted by balance in descending order. In Google Sheets, one can insert the following into a cell, and the contents of the CSV file will be read into the spreadsheet:
+This script creates a CSV file called receivables.csv in a user-specified directory, sorted by balance in descending order. In Google Sheets, one can insert the following into a cell, and the contents of the CSV file will be read into the spreadsheet:
 
 =IMPORTDATA("http://www.yourwebsite.com/path/to/receivables.csv")
 
