@@ -10,4 +10,4 @@ This script is designed to work on Mac OS X, Linux, Unix, and most any *nix oper
 USAGE:
 getReceivables.sh \<output directory\>
 
-Don't forget to either insert your OmegaFi username and password in the script, or export the environment variables "username" and "password" before running it.
+For autonomous script execution, don't forget to either insert your OmegaFi username and password in the appropriate section of the script, or export the environment variables "username" and "password" before running.
