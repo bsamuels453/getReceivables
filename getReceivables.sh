@@ -79,10 +79,10 @@ cookieJar="$scriptTmpDir/cookie.jar"
 outputFile="$outputDirectory/receivables.csv"
 
 # Log in
-curl -s -k -b $cookieJar -c $cookieJar -d "UserName=$username&Password=$password" "https://www.omegafi.com/apps/chapterdesktop/templates/login_post.php" 1>/dev/null
+curl -s -k --ciphers $(openssl ciphers) -b $cookieJar -c $cookieJar -d "UserName=$username&Password=$password" "https://www.omegafi.com/apps/chapterdesktop/templates/login_post.php" 1>/dev/null
 
 # Get report
-curl -s -k -b $cookieJar -c $cookieJar -d "DisplayFields[0]=CurrentBalance\
+curl -s -k --ciphers $(openssl ciphers) -b $cookieJar -c $cookieJar -d "DisplayFields[0]=CurrentBalance\
 &DisplayFields[1]=CellPhone\
 &MemberTypes[0]=Active\
 &MemberTypes[1]=Active Alumni\
