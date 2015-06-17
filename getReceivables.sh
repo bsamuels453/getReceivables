@@ -19,3 +19,5 @@ tac output8 > output9
 
 chown nginx-usr output9
 mv output9 $outputFile
+
+rm output output2 output3 output4 output5 output6 output7 output8
