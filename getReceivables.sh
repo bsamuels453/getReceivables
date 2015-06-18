@@ -30,7 +30,7 @@ curl -s -b $cookiejar --data "CustomMemberReportID=8052" \
 
 sed 's/<TR CLASS="/\'$'\n</g' < $tmpDir/output > $tmpDir/output2
 tail -n+2 $tmpDir/output2 > $tmpDir/output3
-head -n-2 $tmpDir/output3 > $tmpDir/output4
+head -n-1 $tmpDir/output3 > $tmpDir/output4
 sed -e 's/,//g' $tmpDir/output4 > $tmpDir/commaless
 sed -e 's/<[^(>)]*>/,/g' < $tmpDir/commaless > $tmpDir/output5
 sed -e 's/,,/,/g' < $tmpDir/output5 > $tmpDir/output6
