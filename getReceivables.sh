@@ -1,23 +1,44 @@
 #!/bin/sh
 
+USAGE="$0 <output directory>"
 outputDirectory="$1"
+
+if [ -z "$outputDirectory" ]
+then
+    echo "$USAGE" 2>&1
+    exit 1
+fi
+
 outputFile="$outputDirectory/receivables.csv"
 
-authKey="ENTER YOUR SESSION TOKEN HERE"
+username="username"
+password="password"
 
-curl -s -b FSSESSION_VAULT=$authKey --data "CustomMemberReportID=8052" \
-"https://vault.omegafi.com/vault/ajax/services/billingandcollections/custom_member_report_results_get.php" > output
+mkdir /tmp/receivables
+tmpDir="/tmp/receivables"
+cookiejar="$tmpDir/cookie.jar"
 
-sed 's/<TR CLASS="/\'$'\n</g' < output > output2
-tail -n+2 output2 > output3
-head -n-2 output3 > output4
-sed -e 's/<[^(>)]*>/,/g' < output4 > output5
-sed -e 's/,,/,/g' < output5 > output6
-sed -e 's/,//' < output6 > output7
-cut -d , -f 1,2,4,5,6,7 output7 > output8
-tac output8 > output9
+curl -s -b $cookiejar -c $cookiejar \
+    -d "UserName=$username&Password=$password" \
+    "https://my.omegafi.com/apps/myomegafi/login/login_post.php" 1 > /dev/null
 
-chown nginx-usr output9
-mv output9 $outputFile
+curl -L -s -b $cookiejar -c $cookiejar \
+    "https://my.omegafi.com/apps/myomegafi/login/sso_launcher.php?app=Vault" 1 > /dev/null
 
-rm output output2 output3 output4 output5 output6 output7 output8
+curl -s -b $cookiejar --data "CustomMemberReportID=8052" \
+"https://vault.omegafi.com/vault/ajax/services/billingandcollections/custom_member_report_results_get.php" > $tmpDir/output
+
+sed 's/<TR CLASS="/\'$'\n</g' < $tmpDir/output > $tmpDir/output2
+tail -n+2 $tmpDir/output2 > $tmpDir/output3
+head -n-2 $tmpDir/output3 > $tmpDir/output4
+sed -e 's/,//g' $tmpDir/output4 > $tmpDir/commaless
+sed -e 's/<[^(>)]*>/,/g' < $tmpDir/commaless > $tmpDir/output5
+sed -e 's/,,/,/g' < $tmpDir/output5 > $tmpDir/output6
+sed -e 's/,//' < $tmpDir/output6 > $tmpDir/output7
+cut -d , -f 1,2,4,5,6,7 $tmpDir/output7 > $tmpDir/output8
+tac $tmpDir/output8 > $tmpDir/output9
+
+chown nginx-usr $tmpDir/output9
+mv $tmpDir/output9 $outputFile
+
+rm -rf $tmpDir
